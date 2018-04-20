@@ -1,0 +1,74 @@
+<administration-nav></administration-nav>
+
+<ion-content padding>
+
+    <!-- Segment in a form -->
+    <ion-segment color="primary" [(ngModel)]="dmpCreationStep" name = "dmpCreationStep" style="width: 60%; margin: auto;" padding>
+
+      <ion-segment-button value="basicInfo" #personalInfo>
+        <ion-icon name="card"></ion-icon>
+        1. Basic information
+      </ion-segment-button>
+
+      <ion-segment-button value="dataAnalysis" [disabled]="!personalInfoInserted()" #address>
+        <ion-icon name="compass"></ion-icon>
+        2. Data analysis
+      </ion-segment-button>
+
+      <ion-segment-button value="repoAndLicense" [disabled]="!personalInfoInserted()" #accountInfo>
+        <ion-icon name="person"></ion-icon>
+        3. Repository and Licensing
+      </ion-segment-button>
+
+    </ion-segment>
+
+      <div [ngSwitch]="dmpCreationStep" style="width: 50vw;" class="center" padding>
+        <!-- part of the form regarding personal information -->
+        <ion-list *ngSwitchCase="'basicInfo'">
+          <form [formGroup]="basicInfoForm">
+            <ion-grid>
+              <ion-row>
+                <ion-item>
+                  <ion-label floating color="primary">Project Name</ion-label>
+                  <ion-input type="text" value="" formControlName="project"></ion-input>
+                </ion-item>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                    <ion-label floating color="primary">First Name</ion-label>
+                    <ion-input type="text" value="" formControlName="firstName"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col>
+                  <ion-item>
+                    <ion-label floating color="primary">Last Name</ion-label>
+                    <ion-input type="text" value="" formControlName="lastName"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col>
+                  <button ion-button (click)="findOnTiss()" [disabled]="!basicInfoForm.valid" padding>Get basic info</button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </form>
+          <button ion-button (click)="dmpCreationStep = 'dataAnalysis'" style="margin-top: 5%; left: 93%" [disabled]="!foundOnTiss">Next</button>
+        </ion-list>
+
+        <!-- part of the form regarding the address -->
+        <ion-list *ngSwitchCase="'dataAnalysis'">
+          <ion-item>
+            <ion-input type="file" name ="uploadedFile" (change)="fileChange($event)" placeholder="Upload file" accept=".pdf,.doc,.docx"></ion-input>
+          </ion-item>
+          <button ion-button (click)="dmpCreationStep = 'repoAndLicense'" style="margin-top: 5%; left: 93%">Next</button>
+        </ion-list>
+
+        <!-- part of the form regarding account information -->
+        <ion-list *ngSwitchCase="'repoAndLicense'">
+          Choose repo and license
+          <button ion-button style="margin-top: 5%; left: 93%" (click)="createDMP()" >Create DMP</button>
+        </ion-list>
+
+      </div>
+
+</ion-content>

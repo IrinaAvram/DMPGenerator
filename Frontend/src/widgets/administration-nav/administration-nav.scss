@@ -1,0 +1,22 @@
+administration-nav {
+  & + ion-content {
+    margin-top: 56px;
+  }
+
+  .button {
+    color: white;
+    font-size: 2.5ch;
+    margin-left: 25px;
+
+    &.active {
+      text-decoration: underline;
+    }
+  }
+
+  #logout {
+    text-transform: none;
+    font-size: 1.4rem;
+    border-color: white;
+    float: right;
+  }
+}

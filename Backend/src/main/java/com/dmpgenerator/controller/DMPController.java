@@ -2,36 +2,32 @@ package com.dmpgenerator.controller;
 
 import com.dmpgenerator.dto.AnalysisResultDto;
 import com.dmpgenerator.dto.PersonSearchResultsDTO;
-import com.dmpgenerator.dto.generated.https.tiss_tuwien_ac_at.api.schemas.person.v21.PersonType;
+import com.dmpgenerator.dto.RepositoryDto;
 import com.dmpgenerator.dto.generated.https.tiss_tuwien_ac_at.api.schemas.person.v21.TuviennaType;
 import com.dmpgenerator.service.DMPService;
 import edu.harvard.hul.ois.jhove.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Templates;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMResult;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamSource;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/v1/dmp")
@@ -48,6 +44,15 @@ public class DMPController {
     @RequestMapping(value="getBasicInfo/{name}", method = RequestMethod.GET)
     public List<PersonSearchResultsDTO> findByPartOfName(@PathVariable String name) {
         return DMPService.findOnTiss(name);
+    }
+
+    @RequestMapping(value={"getRepoList/{country}", "getRepoList/{country}/{types}"}, method = RequestMethod.GET)
+    public List<RepositoryDto> getRepoList(@PathVariable String country, @PathVariable Optional<String> types) throws ParserConfigurationException, SAXException, IOException {
+        String type = "";
+        if(types.isPresent()) {
+            type = types.get();
+        }
+        return DMPService.getRepoList(country, type);
     }
 
     @RequestMapping(value="getDetailedInfo/{id}", method = RequestMethod.GET)

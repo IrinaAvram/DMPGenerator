@@ -161,7 +161,21 @@
 
         <!-- part of the form regarding account information -->
         <ion-list *ngSwitchCase="'repoAndLicense'">
-          Choose repo and license
+          <ion-grid>
+            <ion-row>
+              <h3>Repositories</h3>
+            </ion-row>
+            <ion-row *ngFor="let repo of repositories" class="userList" style="background-color: #f8f8f8; border-bottom: solid; border-color: #dbdbdb">
+              <ion-col col-10 >
+                <b>{{repo.name}}</b> {{repo.rUrl}}
+              </ion-col>
+              <ion-col col-2>
+                <button ion-button icon-only (click)="setChosenRepo($event, repo)" color="primary" style="float: right;">
+                  <ion-icon name="checkmark-circle-outline"></ion-icon>
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
           <button ion-button style="margin-top: 5%; left: 93%" (click)="createDMP()" >Create DMP</button>
         </ion-list>
 

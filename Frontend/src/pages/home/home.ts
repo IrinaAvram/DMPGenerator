@@ -20,18 +20,33 @@ export class HomePage {
   private inputSize = 0;
   private outputSize = 0;
   private finishedSpaceComputation:boolean = false;
+  private country = "";
+  private outputMimeTypes =[];
+  private repositories =[];
 
   constructor(public restProvider: RestProvider,
               public formBuilder: FormBuilder,
               public navCtrl: NavController,
               public toastCtrl: ToastController) {
     this.dmpCreationStep = "basicInfo";
+    this.getCountryForDOAR();
     this.foundOnTiss = false;
     this.users = [];
     this.files = [];
     this.pcreator = {person:{precedingTitles:"", firstname:"", lastname:"", postpositionedTitles:"", gender:"", mainEmail:"", employee:{employment:[]}}};
 
     this.setUpValidation(this.formBuilder);
+  }
+
+  getCountryForDOAR() {
+    this.restProvider.getCurrentIpLocation().then(data => {
+      console.log("response", data);
+      let a = <any>data;
+      this.country = a.country;
+    })
+      .catch(error => {
+        console.error("Failed to get country: " + JSON.stringify(error));
+      });
   }
 
   setUpValidation(formBuilder) {
@@ -50,6 +65,10 @@ export class HomePage {
     console.log("Selected user: ", user)
     this.users = [];
     this.getDetailedInfo();
+  }
+
+  setChosenRepo(event, repo) {
+    console.log("selected repo", repo)
   }
 
   findOnTiss() {
@@ -142,13 +161,26 @@ export class HomePage {
         this.inputSize = this.inputSize + (this.files[i].size * this.files[i].number)
       } else {
         this.outputSize = this.outputSize + (this.files[i].size * this.files[i].number)
+        if(this.outputMimeTypes.indexOf(this.files[i].mimeType)<0)
+          this.outputMimeTypes.push(this.files[i].mimeType)
       }
     }
     this.finishedSpaceComputation = true;
   }
 
   findRepos() {
-
+    this.restProvider.callGet("api/v1/dmp/getRepoList/" + this.country.toLowerCase())
+      .then(data => {
+        this.repositories = <any>data;
+        console.log("response", data);
+      })
+      .catch(error => {
+        console.error("Failed to get repo: " + JSON.stringify(error));
+        this.toastCtrl.create({
+          message: "Failed to get list of repositories",
+          duration: 3000
+        }).present();
+      });
   }
 
 }

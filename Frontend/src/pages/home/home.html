@@ -47,12 +47,25 @@
                   </ion-item>
                 </ion-col>
                 <ion-col>
-                  <button ion-button (click)="findOnTiss()" [disabled]="!basicInfoForm.valid" padding>Get basic info</button>
+                  <button ion-button (click)="findOnTiss()" [disabled]="basicInfoForm.value.lastName.length < 3" padding>Find on Tiss</button>
+                </ion-col>
+              </ion-row>
+              <ion-row *ngIf="users.length>0" padding>
+                <h3>Results</h3>
+              </ion-row>
+              <ion-row *ngFor="let user of users" class="userList" style="background-color: #f8f8f8; border-bottom: solid; border-color: #dbdbdb">
+                <ion-col col-10 >
+                    {{user.prefixTitle}} {{user.firstname}} {{user.lastname}} {{user.postfixTitle}} - id: {{user.id}}
+                </ion-col>
+                <ion-col col-2>
+                  <button ion-button icon-only (click)="foundOnTiss = true; setChosenUser($event, user)" color="primary" style="float: right;">
+                    <ion-icon name="checkmark-circle-outline"></ion-icon>
+                  </button>
                 </ion-col>
               </ion-row>
             </ion-grid>
           </form>
-          <button ion-button (click)="dmpCreationStep = 'dataAnalysis'" style="margin-top: 5%; left: 93%" [disabled]="!foundOnTiss">Next</button>
+          <button ion-button (click)="dmpCreationStep = 'dataAnalysis'" style="margin-top: 5%; left: 93%" [disabled]="!personalInfoInserted()">Next</button>
         </ion-list>
 
         <!-- part of the form regarding the address -->

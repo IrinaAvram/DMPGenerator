@@ -15,17 +15,19 @@ export class RestProvider {
   }
 
   uploadFile(formData, address) {
-    let headers = new Headers();
-    /** In Angular 5, including the header Content-Type can invalidate your request */
-    headers.append('Content-Type', 'multipart/form-data');
-    headers.append('Accept', 'application/json');
-    console.log(`${this.env.apiEndpoint}/${address}`)
-    this.http.post(`${this.env.apiEndpoint}/${address}`, formData, headers)
-      .map(res => res.json())
-      .subscribe(
-        data => console.log('success'),
-        error => console.log(error)
-      )
+    return new Promise((resolve, reject) => {
+      let headers = new Headers();
+      /** In Angular 5, including the header Content-Type can invalidate your request */
+      headers.append('Content-Type', 'multipart/form-data');
+      headers.append('Accept', 'application/json');
+      console.log(`${this.env.apiEndpoint}/${address}`)
+      this.http.post(`${this.env.apiEndpoint}/${address}`, formData, headers)
+        .map(res => res.json())
+        .subscribe(
+          data => resolve(data),
+          error => reject(error)
+        )
+    })
   }
 
   callGet(address) {

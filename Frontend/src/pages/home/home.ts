@@ -16,6 +16,7 @@ export class HomePage {
   private creator;
   private pcreator;
   public ionicNamedColor: string = 'primary';
+  private files;
 
   constructor(public restProvider: RestProvider,
               public formBuilder: FormBuilder,
@@ -24,6 +25,7 @@ export class HomePage {
     this.dmpCreationStep = "basicInfo";
     this.foundOnTiss = false;
     this.users = [];
+    this.files = [];
     this.pcreator = {person:{precedingTitles:"", firstname:"", lastname:"", postpositionedTitles:"", gender:"", mainEmail:"", employee:{employment:[]}}};
 
     this.setUpValidation(this.formBuilder);
@@ -114,7 +116,18 @@ export class HomePage {
       let file: File = fileList[0];
       let formData: FormData = new FormData();
       formData.append('uploadedFile', file, file.name);
-      this.restProvider.uploadFile(formData, "api/v1/dmp/analizeData")
+      this.restProvider.uploadFile(formData, "api/v1/dmp/analizeData").then(data => {
+        console.log("response", data);
+        let a = <any>data
+        this.files.push({name:file.name, mimeType:a.mimeType, size:a.size})
+      })
+        .catch(error => {
+          console.error("Failed to analize file: " + JSON.stringify(error));
+          this.toastCtrl.create({
+            message: "Failed to to analize file"+file.name,
+            duration: 3000
+          }).present();
+        });
     }
   }
 

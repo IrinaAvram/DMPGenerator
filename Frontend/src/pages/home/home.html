@@ -96,8 +96,19 @@
         <!-- part of the form regarding the address -->
         <ion-list *ngSwitchCase="'dataAnalysis'">
           <ion-item>
-            <ion-input type="file" name ="uploadedFile" (change)="fileChange($event)" placeholder="Upload file" accept=".pdf,.doc,.docx"></ion-input>
+            <ion-input type="file" name ="uploadedFile" (change)="fileChange($event)" placeholder="Upload file"></ion-input><!--accept=".pdf,.doc,.docx"-->
           </ion-item>
+          <ion-grid>
+            <ion-row *ngFor="let file of files" class="userList" style="border-bottom: solid; border-color: #dbdbdb">
+              <ion-col col-10 >
+                {{file.name}} {{file.mimeType}} {{file.size}}
+              </ion-col>
+              <ion-col col-2>
+                dunno what but something is missing
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
           <button ion-button (click)="dmpCreationStep = 'repoAndLicense'" style="margin-top: 5%; left: 93%">Next</button>
         </ion-list>
 

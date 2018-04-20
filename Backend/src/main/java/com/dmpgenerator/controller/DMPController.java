@@ -7,6 +7,8 @@ import com.dmpgenerator.dto.generated.https.tiss_tuwien_ac_at.api.schemas.person
 import com.dmpgenerator.service.DMPService;
 import edu.harvard.hul.ois.jhove.*;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.Document;
@@ -26,6 +28,9 @@ import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -105,37 +110,28 @@ public class DMPController {
         je.dispatch(app, module, handler, handler, outputFile.getPath(), path);
         System.out.println("Output: "+ outputFile.getPath());
 
-        TransformerFactory factory = TransformerFactory.newInstance();
-
-        ClassLoader classLoader = getClass().getClassLoader();
-        File xslFile = new File(classLoader.getResource("jhove.xsl").getFile());
-
-        Templates pss = factory.newTemplates(new StreamSource(xslFile)); //TODO change to relatve path
-        Transformer transformer = pss.newTransformer();
-
         DocumentBuilderFactory domFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = domFactory.newDocumentBuilder();
         Document document = builder.parse(outputFile);
 
         DOMSource src = new DOMSource(document);
-        DOMResult dst = new DOMResult();
-        transformer.transform(src, dst);
 
-        Node node = dst.getNode();
+        Node node = src.getNode();
 
         XPathFactory xpFactory = XPathFactory.newInstance();
         XPath xp = xpFactory.newXPath();
 
         AnalysisResultDto analysisResultDto = new AnalysisResultDto();
 
-        analysisResultDto.setSize(xp.evaluate("/repInfo/size/text()", node));
+        analysisResultDto.setSize(xp.evaluate("/jhove/repInfo/size/text()", node));
         analysisResultDto.setMimeType(xp.evaluate("/jhove/repInfo/mimeType/text()", node));
-        analysisResultDto.setByteOrder(xp.evaluate("/mix:mix/mix:BasicImageParameters/mix:Format/mix:ByteOrder/text()", node));
-        analysisResultDto.setCompressionScheme(xp.evaluate("/mix:mix/mix:BasicImageParameters/mix:Format/mix:Compression/mix:CompressionScheme/text()", node));
-        analysisResultDto.setColorSpace(xp.evaluate("/mix:mix/mix:BasicImageParameters/mix:Format/mix:PhotometricInterpretation/mix:ColorSpace/text()", node));
-        analysisResultDto.setStripOffsets(xp.evaluate("/mix:mix/mix:BasicImageParameters/mix:Format/mix:Segments/mix:StripOffsets/text()", node));
-
-        System.out.println(analysisResultDto.toString());
+        analysisResultDto.setFormat(xp.evaluate("/jhove/repInfo/format/text()", node));
+        analysisResultDto.setModule(xp.evaluate("/jhove/repInfo/sigmatch/module/text()", node));
+        analysisResultDto.setStatus(xp.evaluate("/jhove/repInfo/status/text()", node));
+        String pattern = "yyyy-MM-dd'T'HH:mm:ss";
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        Date date1 = sdf.parse(xp.evaluate("/jhove/repInfo/lastModified/text()", node));
+        analysisResultDto.setLastModified(date1);
 
         return analysisResultDto;
     }

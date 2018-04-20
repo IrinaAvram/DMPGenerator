@@ -1,12 +1,15 @@
 package com.dmpgenerator.dto;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 public class AnalysisResultDto {
     private String mimeType;
-    private String byteOrder;
-    private String compressionScheme;
-    private String colorSpace;
-    private String stripOffsets;
     private String size;
+    private Date lastModified;
+    private String format;
+    private String status;
+    private String module;
 
     public AnalysisResultDto() {
     }
@@ -19,38 +22,6 @@ public class AnalysisResultDto {
         this.mimeType = mimeType;
     }
 
-    public String getByteOrder() {
-        return byteOrder;
-    }
-
-    public void setByteOrder(String byteOrder) {
-        this.byteOrder = byteOrder;
-    }
-
-    public String getCompressionScheme() {
-        return compressionScheme;
-    }
-
-    public void setCompressionScheme(String compressionScheme) {
-        this.compressionScheme = compressionScheme;
-    }
-
-    public String getColorSpace() {
-        return colorSpace;
-    }
-
-    public void setColorSpace(String colorSpace) {
-        this.colorSpace = colorSpace;
-    }
-
-    public String getStripOffsets() {
-        return stripOffsets;
-    }
-
-    public void setStripOffsets(String stripOffsets) {
-        this.stripOffsets = stripOffsets;
-    }
-
     public String getSize() {
         return size;
     }
@@ -59,15 +30,47 @@ public class AnalysisResultDto {
         this.size = size;
     }
 
+    public Date getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(Date lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
+    }
+
     @Override
     public String toString() {
         return "AnalysisResultDto{" +
                 "mimeType='" + mimeType + '\'' +
-                ", byteOrder='" + byteOrder + '\'' +
-                ", compressionScheme='" + compressionScheme + '\'' +
-                ", colorSpace='" + colorSpace + '\'' +
-                ", stripOffsets='" + stripOffsets + '\'' +
                 ", size='" + size + '\'' +
+                ", lastModified=" + lastModified +
+                ", format='" + format + '\'' +
+                ", status='" + status + '\'' +
+                ", module='" + module + '\'' +
                 '}';
     }
 }

@@ -17,6 +17,9 @@ export class HomePage {
   private pcreator;
   public ionicNamedColor: string = 'primary';
   private files;
+  private inputSize = 0;
+  private outputSize = 0;
+  private finishedSpaceComputation:boolean = false;
 
   constructor(public restProvider: RestProvider,
               public formBuilder: FormBuilder,
@@ -112,14 +115,16 @@ export class HomePage {
 
   fileChange(event) {
     let fileList: FileList = event.target.files;
-    if(fileList.length > 0) {
-      let file: File = fileList[0];
+    let i = 0;
+    while(i < fileList.length) {
+      let file: File = fileList[i];
+      i++;
       let formData: FormData = new FormData();
       formData.append('uploadedFile', file, file.name);
       this.restProvider.uploadFile(formData, "api/v1/dmp/analizeData").then(data => {
         console.log("response", data);
         let a = <any>data
-        this.files.push({name:file.name, mimeType:a.mimeType, size:a.size})
+        this.files.push({name:file.name, mimeType:a.mimeType, size:a.size, type:"input", number:1})
       })
         .catch(error => {
           console.error("Failed to analize file: " + JSON.stringify(error));
@@ -129,6 +134,21 @@ export class HomePage {
           }).present();
         });
     }
+  }
+
+  computeSpaceRequirements() {
+    for(let i = 0; i < this.files.length; i++) {
+      if(this.files[i].type === "input") {
+        this.inputSize = this.inputSize + (this.files[i].size * this.files[i].number)
+      } else {
+        this.outputSize = this.outputSize + (this.files[i].size * this.files[i].number)
+      }
+    }
+    this.finishedSpaceComputation = true;
+  }
+
+  findRepos() {
+
   }
 
 }

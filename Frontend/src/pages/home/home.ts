@@ -14,6 +14,7 @@ export class HomePage {
   private foundOnTiss:any;
   private users:any;
   private creator;
+  private pcreator;
   public ionicNamedColor: string = 'primary';
 
   constructor(public restProvider: RestProvider,
@@ -23,6 +24,8 @@ export class HomePage {
     this.dmpCreationStep = "basicInfo";
     this.foundOnTiss = false;
     this.users = [];
+    this.pcreator = {person:{precedingTitles:"", firstname:"", lastname:"", postpositionedTitles:"", gender:"", mainEmail:"", employee:{employment:[]}}};
+
     this.setUpValidation(this.formBuilder);
   }
 
@@ -72,8 +75,10 @@ export class HomePage {
   getDetailedInfo() {
     this.restProvider.callGet("api/v1/dmp/getDetailedInfo/" + this.creator.id)
       .then(data => {
-        console.log("response", data);
-        this.creator = data;
+
+        this.pcreator = data;
+        console.log("response", this.pcreator);
+        this.foundOnTiss = true;
         this.toastCtrl.create({
           message: "Successfully selected user " + this.basicInfoForm.value.firstName + " " + this.basicInfoForm.value.lastName,
           duration: 3000

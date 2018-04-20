@@ -28,27 +28,52 @@
           <form [formGroup]="basicInfoForm">
             <ion-grid>
               <ion-row>
-                <ion-item>
-                  <ion-label floating color="primary">Project Name</ion-label>
-                  <ion-input type="text" value="" formControlName="project"></ion-input>
-                </ion-item>
+                <ion-col col-2>
+                </ion-col>
+                <ion-col col-8>
+                  <ion-item>
+                    <ion-label floating color="primary">Project Name</ion-label>
+                    <ion-input type="text" value="" formControlName="project"></ion-input>
+                  </ion-item>
+                </ion-col>
+                <ion-col col-2>
+                </ion-col>
               </ion-row>
               <ion-row>
-                <ion-col>
+                <ion-col col-2>
+                  <div style="padding-top: 50%">{{pcreator.person.precedingTitles}}</div>
+                </ion-col>
+                <ion-col col-4>
                   <ion-item>
                     <ion-label floating color="primary">First Name</ion-label>
                     <ion-input type="text" value="" formControlName="firstName"></ion-input>
                   </ion-item>
                 </ion-col>
-                <ion-col>
+                <ion-col col-4>
                   <ion-item>
                     <ion-label floating color="primary">Last Name</ion-label>
                     <ion-input type="text" value="" formControlName="lastName"></ion-input>
                   </ion-item>
                 </ion-col>
-                <ion-col>
-                  <button ion-button (click)="findOnTiss()" [disabled]="basicInfoForm.value.lastName.length < 3" padding>Find on Tiss</button>
+                <ion-col col-2>
+                  <div style="padding-top: 50%">{{pcreator.person.postpositionedTitles}}</div>
+                  <button ion-button (click)="findOnTiss()" [disabled]="basicInfoForm.value.lastName.length < 3" padding *ngIf="!foundOnTiss">Find on Tiss</button>
                 </ion-col>
+              </ion-row>
+              <ion-row></ion-row>
+              <ion-row></ion-row>
+              <ion-row *ngIf="pcreator.person.mainEmail" padding>
+                <h3>Contact</h3>
+                <b></b>
+              </ion-row>
+              <ion-row *ngIf="pcreator.person.mainEmail">
+                Email: {{pcreator.person.mainEmail}}
+              </ion-row>
+              <ion-row *ngIf="pcreator.person.employee.employment.length>0" padding>
+                <h3>Position</h3>
+              </ion-row>
+              <ion-row *ngFor="let job of pcreator.person.employee.employment" class="userList" style="border-bottom: solid; border-color: #dbdbdb">
+                {{job.function}} at {{job.organisationalUnit.value}}
               </ion-row>
               <ion-row *ngIf="users.length>0" padding>
                 <h3>Results</h3>
@@ -58,7 +83,7 @@
                     {{user.prefixTitle}} {{user.firstname}} {{user.lastname}} {{user.postfixTitle}} - id: {{user.id}}
                 </ion-col>
                 <ion-col col-2>
-                  <button ion-button icon-only (click)="foundOnTiss = true; setChosenUser($event, user)" color="primary" style="float: right;">
+                  <button ion-button icon-only (click)="setChosenUser($event, user)" color="primary" style="float: right;">
                     <ion-icon name="checkmark-circle-outline"></ion-icon>
                   </button>
                 </ion-col>

@@ -20,7 +20,9 @@ export class HomePage {
   private inputSize = 0;
   private outputSize = 0;
   private finishedSpaceComputation:boolean = false;
+  private repoWasChosen:boolean = false;
   private country = "";
+  private selectedRepo = {};
   private outputMimeTypes =[];
   private repositories =[];
 
@@ -69,6 +71,9 @@ export class HomePage {
 
   setChosenRepo(event, repo) {
     console.log("selected repo", repo)
+    this.repoWasChosen = true;
+    this.selectedRepo = repo;
+    this.repositories = [];
   }
 
   findOnTiss() {

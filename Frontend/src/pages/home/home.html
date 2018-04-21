@@ -175,10 +175,17 @@
                 </button>
               </ion-col>
             </ion-row>
+            <ion-row *ngIf="repoWasChosen">
+              <h4>{{selectedRepo.name}}</h4>
+            </ion-row>
+            <ion-row *ngIf="repoWasChosen">
+              <p><b>Url:</b> {{selectedRepo.rUrl}}</p>
+            </ion-row>
+            <ion-row *ngIf="repoWasChosen">
+              <p><b>Oai based Url:</b> {{selectedRepo.rOaiBaseUrl}}</p>
+            </ion-row>
           </ion-grid>
-          <button ion-button style="margin-top: 5%; left: 93%" (click)="createDMP()" >Create DMP</button>
+          <button ion-button style="margin-top: 5%; left: 93%" (click)="createDMP()" [disabled]="!repoWasChosen">Create DMP</button>
         </ion-list>
-
       </div>
-
 </ion-content>

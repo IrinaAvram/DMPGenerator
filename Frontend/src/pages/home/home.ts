@@ -15,7 +15,6 @@ export class HomePage {
   private users:any;
   private creator;
   private pcreator;
-  public ionicNamedColor: string = 'primary';
   private files;
   private inputSize = 0;
   private outputSize = 0;
@@ -25,18 +24,19 @@ export class HomePage {
   private selectedRepo = {};
   private outputMimeTypes =[];
   private repositories =[];
+  private projectName = "";
 
   constructor(public restProvider: RestProvider,
               public formBuilder: FormBuilder,
               public navCtrl: NavController,
               public toastCtrl: ToastController) {
+
     this.dmpCreationStep = "basicInfo";
     this.getCountryForDOAR();
     this.foundOnTiss = false;
     this.users = [];
     this.files = [];
     this.pcreator = {person:{precedingTitles:"", firstname:"", lastname:"", postpositionedTitles:"", gender:"", mainEmail:"", employee:{employment:[]}}};
-
     this.setUpValidation(this.formBuilder);
   }
 
@@ -52,9 +52,8 @@ export class HomePage {
   }
 
   setUpValidation(formBuilder) {
-
     this.basicInfoForm = formBuilder.group({
-      project: ['', Validators.compose([Validators.minLength(3), Validators.maxLength(25), Validators.pattern('[a-zA-ZÄÖÜäöüß ]*'), Validators.required])],
+      project: [this.projectName, Validators.compose([Validators.minLength(3), Validators.maxLength(25), Validators.pattern('[a-zA-ZÄÖÜäöüß ]*'), Validators.required])],
       firstName: ['', Validators.compose([Validators.minLength(3), Validators.maxLength(25), Validators.pattern('[a-zA-ZÄÖÜäöüß ]*')])],
       lastName: ['', Validators.compose([Validators.minLength(3), Validators.maxLength(25), Validators.pattern('[a-zA-ZÄÖÜäöüß ]*'), Validators.required])],
     });
@@ -77,19 +76,27 @@ export class HomePage {
   }
 
   findOnTiss() {
+    this.users = [];
     let search = ""
     if(this.basicInfoForm.value.firstName)
-      search = this.basicInfoForm.value.firstName + "-" + this.basicInfoForm.value.lastName;
+      search = this.basicInfoForm.value.firstName + "+" + this.basicInfoForm.value.lastName;
     else
       search = this.basicInfoForm.value.lastName
     this.restProvider.callGet("api/v1/dmp/getBasicInfo/" + search)
       .then(data => {
         console.log("response", data);
         this.users = data;
-        this.toastCtrl.create({
-          message: "Successfully obtained basic info for " + this.basicInfoForm.value.firstName + " " + this.basicInfoForm.value.lastName,
-          duration: 3000
-        }).present();
+        if(this.users.length > 0) {
+          this.toastCtrl.create({
+            message: "Successfully obtained basic info for " + this.basicInfoForm.value.firstName + " " + this.basicInfoForm.value.lastName,
+            duration: 3000
+          }).present();
+        } else {
+          this.toastCtrl.create({
+            message: "No users found for " + this.basicInfoForm.value.firstName + " " + this.basicInfoForm.value.lastName,
+            duration: 3000
+          }).present();
+        }
 
       })
       .catch(error => {
@@ -138,6 +145,7 @@ export class HomePage {
   }
 
   fileChange(event) {
+    console.log("projname", this.projectName)
     let fileList: FileList = event.target.files;
     let i = 0;
     while(i < fileList.length) {

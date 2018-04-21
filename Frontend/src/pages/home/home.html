@@ -78,7 +78,7 @@
               <ion-row *ngIf="pcreator.person.employee.employment.length>0" style ="padding-top:10px">
                 <h3>Position</h3>
               </ion-row>
-              <ion-row *ngFor="let job of pcreator.person.employee.employment" class="userList" style="border-bottom: solid; border-color: #dbdbdb">
+              <ion-row *ngFor="let job of pcreator.person.employee.employment" style="border-bottom: solid; border-color: #dbdbdb">
                 {{job.function}} at {{job.organisationalUnit.value}}
               </ion-row>
               <ion-row *ngIf="users.length>0" style ="padding-top:10px">
@@ -101,11 +101,12 @@
 
         <!-- part of the form regarding the address -->
         <ion-list *ngSwitchCase="'dataAnalysis'">
+          <h3>Upload Sample files</h3>
           <ion-item>
             <ion-input type="file" name ="uploadedFile" (change)="fileChange($event)" placeholder="Upload file" multiple></ion-input><!--accept=".pdf,.doc,.docx"-->
           </ion-item>
           <ion-grid>
-            <ion-row *ngIf="files.length > 0" class="userList" style="background-color: #007aff; color: white; border-bottom: solid; border-color: #dbdbdb">
+            <ion-row *ngIf="files.length > 0" style="background-color: #007aff; color: white; border-bottom: solid; border-color: #dbdbdb">
               <ion-col col-2 padding-top="2px">
                 Name
               </ion-col>
@@ -122,7 +123,7 @@
                 Nr. of Files
               </ion-col>
             </ion-row>
-            <ion-row *ngFor="let file of files" class="userList" style="border-bottom: solid; border-color: #dbdbdb">
+            <ion-row *ngFor="let file of files" style="border-bottom: solid; border-color: #dbdbdb">
               <ion-col col-2 padding-top="5px">
                 {{file.name}}
               </ion-col>

@@ -138,8 +138,13 @@
                   <ion-option value="output">output</ion-option>
                 </ion-select>
               </ion-col>
-              <ion-col col-3>
+              <ion-col col-2>
                 <ion-input type="number" [(ngModel)]="file.number" placeholder="Nr. Files"></ion-input>
+              </ion-col>
+              <ion-col col-1>
+                <button ion-button icon-only (click)="removeFile($event, file)" color="primary" style="float: right;">
+                  <ion-icon name="close-circle"></ion-icon>
+                </button>
               </ion-col>
             </ion-row>
             <ion-row *ngIf="finishedSpaceComputation" class="userList" style="background-color: #007aff; color: white; border-bottom: solid; border-color: #dbdbdb">

@@ -169,6 +169,8 @@ export class HomePage {
   }
 
   computeSpaceRequirements() {
+    this.inputSize = 0;
+    this.outputSize = 0;
     for(let i = 0; i < this.files.length; i++) {
       if(this.files[i].type === "input") {
         this.inputSize = this.inputSize + (this.files[i].size * this.files[i].number)
@@ -280,6 +282,13 @@ export class HomePage {
           duration: 3000
         }).present();
       });
+  }
+
+  removeFile(event, file) {
+    this.files = this.files.filter(item => item !== file);
+    this.inputSize = 0;
+    this.outputSize = 0;
+    this.finishedSpaceComputation = false;
   }
 
 }

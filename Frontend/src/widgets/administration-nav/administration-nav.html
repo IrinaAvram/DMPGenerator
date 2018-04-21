@@ -2,12 +2,7 @@
   <ion-navbar color="primary">
     <ion-buttons>
       <a class="button"
-         [class.active]="navCtrl.getActive().name === 'RoomListingPage'"
-         (click)="navCtrl.setRoot('RoomListing')">DMPS</a>
-      <a class="button"
-         [class.active]="navCtrl.getActive().name === 'EventsListingPage'"
-         (click)="navCtrl.setRoot('EventsListing')">Create</a>
-      <a ion-button outline end id="logout" (click)="logout()">Logout</a>
+         (click)="navCtrl.setRoot('Home')">Generate new DMP</a>
     </ion-buttons>
   </ion-navbar>
 </ion-header>

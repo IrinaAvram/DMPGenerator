@@ -51,6 +51,9 @@ public class DMPController {
         String type = "";
         if(types.isPresent()) {
             type = types.get();
+            System.out.println("FOUND TYPE " + type);
+        } else {
+            System.out.println("nothin....");
         }
         return DMPService.getRepoList(country, type);
     }

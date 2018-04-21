@@ -174,15 +174,101 @@ export class HomePage {
         this.inputSize = this.inputSize + (this.files[i].size * this.files[i].number)
       } else {
         this.outputSize = this.outputSize + (this.files[i].size * this.files[i].number)
-        if(this.outputMimeTypes.indexOf(this.files[i].mimeType)<0)
-          this.outputMimeTypes.push(this.files[i].mimeType)
+        this.getContentType(this.files[i].mimeType)
       }
     }
     this.finishedSpaceComputation = true;
   }
 
+  /* Content Types
+   * 1	 	Research papers (pre- and postprints)
+   * 2	 	Research papers (preprints only)
+   * 3	 	Research papers (postprints only)
+   * 4	 	Bibliographic references
+   * 5	 	Conference and workshop papers
+   * 6	 	Theses and dissertations
+   * 7	 	Unpublished reports and working papers
+   * 8	 	Books   chapters and sections
+   * 9	 	Datasets
+   * 10	 	Learning Objects
+   * 11	 	Multimedia and audio-visual materials
+   * 12	 	Software
+   * 13	 	Patents
+   * 14	 	Other special item types
+   */
+  getContentType(mimeType) {
+    console.log("MimeType", mimeType);
+
+    if(mimeType === "text/plain; charset=US-ASCII") {
+      if (this.outputMimeTypes.indexOf(9) < 0)
+        this.outputMimeTypes.push(9)
+      if (this.outputMimeTypes.indexOf(12) < 0)
+        this.outputMimeTypes.push(12)
+      if (this.outputMimeTypes.indexOf(14) < 0)
+        this.outputMimeTypes.push(14)
+    } else if(mimeType === "image/gif") {
+      if (this.outputMimeTypes.indexOf(10) < 0)
+        this.outputMimeTypes.push(10)
+      if (this.outputMimeTypes.indexOf(11) < 0)
+        this.outputMimeTypes.push(11)
+      if (this.outputMimeTypes.indexOf(14) < 0)
+        this.outputMimeTypes.push(14)
+    } else if(mimeType === "image/tiff") {
+      if (this.outputMimeTypes.indexOf(10) < 0)
+        this.outputMimeTypes.push(10)
+      if (this.outputMimeTypes.indexOf(11) < 0)
+        this.outputMimeTypes.push(11)
+      if (this.outputMimeTypes.indexOf(14) < 0)
+        this.outputMimeTypes.push(14)
+    } else if(mimeType === "application/pdf") {
+      let i = 1;
+      // contentypes 1 to 8 could all be pdf
+      for(i = 1; i <= 8; i++) {
+        if (this.outputMimeTypes.indexOf(i) < 0)
+          this.outputMimeTypes.push(i)
+      }
+      if (this.outputMimeTypes.indexOf(10) < 0)
+        this.outputMimeTypes.push(10)
+      if (this.outputMimeTypes.indexOf(14) < 0)
+        this.outputMimeTypes.push(14)
+
+    } else if(mimeType === "image/jpeg") {
+      if (this.outputMimeTypes.indexOf(10) < 0)
+        this.outputMimeTypes.push(10)
+      if (this.outputMimeTypes.indexOf(11) < 0)
+        this.outputMimeTypes.push(11)
+      if (this.outputMimeTypes.indexOf(14) < 0)
+        this.outputMimeTypes.push(14)
+
+    } else if(mimeType === "application/octet-stream") {
+      if (this.outputMimeTypes.indexOf(9) < 0)
+        this.outputMimeTypes.push(9)
+      if (this.outputMimeTypes.indexOf(11) < 0)
+        this.outputMimeTypes.push(11)
+      if (this.outputMimeTypes.indexOf(12) < 0)
+        this.outputMimeTypes.push(12)
+      if (this.outputMimeTypes.indexOf(13) < 0)
+        this.outputMimeTypes.push(13)
+      if (this.outputMimeTypes.indexOf(14) < 0)
+        this.outputMimeTypes.push(14)
+    }
+  }
+
   findRepos() {
-    this.restProvider.callGet("api/v1/dmp/getRepoList/" + this.country.toLowerCase())
+
+    console.log("contentTypes", this.outputMimeTypes);
+    let search = "";
+    search = search + this.country.toLowerCase()
+    if(this.outputMimeTypes.length > 0) {
+      search = search + "/" + this.outputMimeTypes[0]
+      let i = 1;
+      for(i = 1; i < this.outputMimeTypes.length; i++) {
+        search=search + "," + this.outputMimeTypes[i];
+      }
+    }
+    console.log("search", search);
+
+    this.restProvider.callGet("api/v1/dmp/getRepoList/" + search)
       .then(data => {
         this.repositories = <any>data;
         console.log("response", data);

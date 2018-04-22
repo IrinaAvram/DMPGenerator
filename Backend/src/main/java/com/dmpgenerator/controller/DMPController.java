@@ -35,6 +35,7 @@ import java.util.Optional;
 public class DMPController {
 
     private final com.dmpgenerator.service.DMPService DMPService;
+    private String license = "";
 
     @Autowired
     public DMPController(DMPService DMPService) {
@@ -61,6 +62,16 @@ public class DMPController {
     @RequestMapping(value="getDetailedInfo/{id}", method = RequestMethod.GET)
     public TuviennaType getDetailedInfo(@PathVariable int id) throws JAXBException {
         return DMPService.getDetailedInfoFromTiss(id);
+    }
+
+    @RequestMapping(value="sendLicense", method = RequestMethod.POST)
+    public void sendLicense(@RequestBody String license) throws Exception {
+        this.license = license;
+        System.out.println(license);
+    }
+    @RequestMapping(value="getLicense", method = RequestMethod.GET)
+    public String getLicense() throws Exception {
+        return license;
     }
 
     @RequestMapping(value="analizeData", method = RequestMethod.POST, consumes = {"multipart/form-data"})

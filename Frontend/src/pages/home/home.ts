@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import { NavController, ToastController } from 'ionic-angular';
 import {RestProvider} from "../../providers/rest/rest";
 import {FormBuilder, Validators} from "@angular/forms";
+import { DOCUMENT } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'page-home',
@@ -20,13 +22,16 @@ export class HomePage {
   private outputSize = 0;
   private finishedSpaceComputation:boolean = false;
   private repoWasChosen:boolean = false;
+  private licenseWasChosen:boolean = false;
   private country = "";
   private selectedRepo = {};
+  private selectedLicense = {};
   private outputMimeTypes =[];
   private repositories =[];
   private projectName = "";
 
-  constructor(public restProvider: RestProvider,
+  constructor(@Inject(DOCUMENT) private document: any,
+              public restProvider: RestProvider,
               public formBuilder: FormBuilder,
               public navCtrl: NavController,
               public toastCtrl: ToastController) {
@@ -284,11 +289,32 @@ export class HomePage {
       });
   }
 
+  getLicense() {
+
+    this.restProvider.callGet("api/v1/dmp/getLicense")
+      .then(data => {
+        console.log("response", data);
+        this.licenseWasChosen = true;
+        this.selectedLicense = data;
+      })
+      .catch(error => {
+        console.error("Failed to get license: " + JSON.stringify(error));
+        this.toastCtrl.create({
+          message: "Failed to get license",
+          duration: 3000
+        }).present();
+      });
+  }
+
   removeFile(event, file) {
     this.files = this.files.filter(item => item !== file);
     this.inputSize = 0;
     this.outputSize = 0;
     this.finishedSpaceComputation = false;
+  }
+
+  goToLicense() {
+    this.document.location.href = 'http://localhost:63342/DMPGenerator/Frontend/src/public-license-selector-releases/index.html?_ijt=35koear2oos41tsavf2e0pl69k';
   }
 
 }

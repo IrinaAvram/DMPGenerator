@@ -2,6 +2,7 @@ package com.dmpgenerator.util;
 
 public enum ApiEndpoint {
     ROOT("https://tiss.tuwien.ac.at/api/person/v21/"),
+    LICENSE("https://ufal.github.io/public-license-selector"),
     DOAR("http://www.opendoar.org/api13.php?co="),
     DOARPARAMS1("&ct="),
     DOARPARAMS2("&show=min&sort=co,rname"),

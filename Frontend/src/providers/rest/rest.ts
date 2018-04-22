@@ -29,6 +29,21 @@ export class RestProvider {
     })
   }
 
+  callGetLicense(address) {
+    let headers = new Headers();
+    /** In Angular 5, including the header Content-Type can invalidate your request */
+    headers.append('Accept', 'text/xml');
+    headers.append('Accept', 'text/html');
+    //headers.append("Access-Control-Allow-Origin", "*");;
+    return new Promise((resolve, reject) => {
+      this.http.get(address, headers)
+        .subscribe(
+          data => resolve(data),
+          error => reject(error)
+        )
+    })
+  }
+
   getCurrentIpLocation() {
     return new Promise((resolve, reject) => {
       this.http.get('http://ipinfo.io')

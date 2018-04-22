@@ -25,6 +25,7 @@
       <div [ngSwitch]="dmpCreationStep" style="width: 50vw;" class="center" padding>
         <!-- part of the form regarding personal information -->
         <ion-list *ngSwitchCase="'basicInfo'">
+          <button ion-button style="margin-top: 5%; left: 93%" (click)="goToLicense()" >Select License</button>
           <form [formGroup]="basicInfoForm">
             <ion-grid>
               <ion-row>
@@ -168,7 +169,7 @@
             </ion-row>
           </ion-grid>
           <button ion-button (click)="computeSpaceRequirements()" style="margin-top: 5%; left: 93%">Compute requirements</button>
-          <button ion-button (click)="dmpCreationStep = 'repoAndLicense';findRepos()" style="margin-top: 5%; left: 93%" [disabled]="!finishedSpaceComputation">Next</button>
+          <button ion-button (click)="dmpCreationStep = 'repoAndLicense';findRepos();getLicense();" style="margin-top: 5%; left: 93%" [disabled]="!finishedSpaceComputation">Next</button>
         </ion-list>
 
         <!-- part of the form regarding account information -->
@@ -196,7 +197,15 @@
             <ion-row *ngIf="repoWasChosen">
               <p><b>Oai based Url:</b> {{selectedRepo.rOaiBaseUrl}}</p>
             </ion-row>
+            <ion-row *ngIf="licenseWasChosen" style ="padding-top:30px">
+              <h4>License: {{selectedLicense.name}}</h4>
+            </ion-row>
+            <ion-row *ngIf="licenseWasChosen">
+              <p><b>Description:</b> {{selectedLicense.description}}</p>
+            </ion-row>
           </ion-grid>
+
+
           <button ion-button style="margin-top: 5%; left: 93%" (click)="createDMP()" [disabled]="!repoWasChosen">Create DMP</button>
         </ion-list>
       </div>

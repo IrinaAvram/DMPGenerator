@@ -151,7 +151,7 @@ export class HomePage {
   createDMP() {
     // TODO
     this.dmpWasGenerated=true;
-    this.generatedDmp = {project:this.projectName, author: this.pcreator};
+    this.generatedDmp = {project:this.projectName, author: this.pcreator, repository:this.selectedRepo, license: this.selectedLicense, files: this.files};
     this.gDmp = JSON.stringify({
       "@context": {
         "dmp": "http://purl.org/madmps#",

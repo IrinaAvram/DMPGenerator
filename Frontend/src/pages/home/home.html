@@ -215,7 +215,7 @@
               <p><b>Author:</b> {{generatedDmp.author.person.precedingTitles}} {{generatedDmp.author.person.firstname}} {{generatedDmp.author.person.lastname}} {{generatedDmp.author.person.postpositionedTitles}} </p>
             </ion-row>
             <ion-row *ngIf="dmpWasGenerated">
-              <p><b>Generated JSON</b> </p><pre>{{gDmp}}</pre>
+              <p><b>Generated JSON</b> </p>{{generatedDmp}}
             </ion-row>
           </ion-grid>
 

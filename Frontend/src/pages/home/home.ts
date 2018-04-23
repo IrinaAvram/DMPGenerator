@@ -152,7 +152,7 @@ export class HomePage {
     // TODO
     this.dmpWasGenerated=true;
     this.generatedDmp = {project:this.projectName, author: this.pcreator, repository:this.selectedRepo, license: this.selectedLicense, files: this.files};
-    this.gDmp = JSON.stringify({
+    /*this.gDmp = this.syntaxHighlight(this.generatedDmp);JSON.stringify({
       "@context": {
         "dmp": "http://purl.org/madmps#",
         "foaf": "http://xmlns.com/foaf/0.1/",
@@ -272,7 +272,7 @@ export class HomePage {
           ]
         }
       ]
-    }, null, 2);
+    }, null, 2);*/
   }
 
   syntaxHighlight(json) {

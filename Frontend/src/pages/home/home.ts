@@ -23,9 +23,11 @@ export class HomePage {
   private finishedSpaceComputation:boolean = false;
   private repoWasChosen:boolean = false;
   private licenseWasChosen:boolean = false;
+  private dmpWasGenerated:boolean = false;
   private country = "";
   private selectedRepo = {};
   private selectedLicense = {};
+  private generatedDmp = {};
   private outputMimeTypes =[];
   private repositories =[];
   private projectName = "";
@@ -147,6 +149,8 @@ export class HomePage {
 
   createDMP() {
     // TODO
+    this.dmpWasGenerated=true;
+    this.generatedDmp = {"project":this.projectName,"author:":this.basicInfoForm.value.firstName};
   }
 
   fileChange(event) {

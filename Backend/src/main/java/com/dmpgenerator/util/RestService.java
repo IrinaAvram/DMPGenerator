@@ -136,6 +136,7 @@ public class RestService {
         URL url = null;
         try {
             url = new URL(ApiEndpoint.ROOT.url() + ApiEndpoint.PERSONID.url() + id);
+            System.out.println("URL: " + url);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

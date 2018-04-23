@@ -25,9 +25,10 @@ export class HomePage {
   private licenseWasChosen:boolean = false;
   private dmpWasGenerated:boolean = false;
   private country = "";
-  private selectedRepo = {};
+  private selectedRepo = {rUrl:""};
   private selectedLicense = {};
   private generatedDmp = {};
+  private gDmp = {};
   private outputMimeTypes =[];
   private repositories =[];
   private projectName = "";
@@ -150,7 +151,150 @@ export class HomePage {
   createDMP() {
     // TODO
     this.dmpWasGenerated=true;
-    this.generatedDmp = {"project":this.projectName,"author:":this.basicInfoForm.value.firstName};
+    this.generatedDmp = {project:this.projectName, author: this.pcreator};
+    this.gDmp = JSON.stringify({
+      "@context": {
+        "dmp": "http://purl.org/madmps#",
+        "foaf": "http://xmlns.com/foaf/0.1/",
+        "dc": "http://purl.org/dc/elements/1.1/",
+        "dcterms": "http://purl.org/dc/terms/",
+        "premis": "http://www.loc.gov/premis/rdf/v1#"
+      },
+      "@id": "http://example.org/dmps/mydmp",//TODO
+      "@type": "dmp:DataManagementPlan",
+      "dcterms": {"title": this.projectName,
+        "description": "Pre-project plan for project " + this.projectName},
+      "dc:creator": [
+        {
+          "@id": "https://tiss.tuwien.ac.at/api/person/v21/id/" + this.pcreator.person.tissId,
+          "foaf:name": this.pcreator.person.precedingTitles + " " + this.pcreator.person.firstname + " " + this.pcreator.person.lastname + " " + this.pcreator.person.postpositionedTitles ,
+          "foaf:mbox": this.pcreator.person.mainEmail,
+          "foaf:employment": this.pcreator.employment
+        }
+      ],
+      "dc:publisher": [
+        {
+          "@id": "https://tiss.tuwien.ac.at/api/person/v21/id/" + this.pcreator.person.tissId,
+          "foaf:name": this.pcreator.person.precedingTitles + " " + this.pcreator.person.firstname + " " + this.pcreator.person.lastname + " " + this.pcreator.person.postpositionedTitles ,
+          "foaf:mbox": this.pcreator.person.mainEmail,
+          "foaf:employment": this.pcreator.employment
+        }
+      ],
+      "dc:contributor": [
+        {
+          "@id": "https://tiss.tuwien.ac.at/api/person/v21/id/" + this.pcreator.person.tissId,
+          "foaf:name": this.pcreator.person.precedingTitles + " " + this.pcreator.person.firstname + " " + this.pcreator.person.lastname + " " + this.pcreator.person.postpositionedTitles ,
+          "foaf:mbox": this.pcreator.person.mainEmail,
+          "foaf:employment": this.pcreator.employment
+        }
+      ],
+      "dcterms:hasVersion": "v0.0.1",
+      "dc:date": Date.now(),
+      "dmp:hasDataObject": [
+        {
+          "@id": "https://doi.org/10.5281/zenodo.803326",
+          "@type": "dmp:SourceCode",
+          "dmp:hasIntelectualPropertyRights": {
+            "dcterms:license": "https://opensource.org/licenses/MIT"
+          },
+          "dmp:hasMetadata": {
+            "dcterms:description": "Bundle containing the source code (Jupyter notebook), input data and Dockerfile",
+            "premis:hasObjectCharacteristics": {
+              "premis:hasFormat": "premis:Format:zip",
+              "premis:fixity": {
+                "premis:hasMessageDigestAlgorithm": "premis:Fixity:SHA-256",
+                "premis:messageDigest": "66798be94ce2de3d037c08b6297941678d308774b3912d74336c72c975fcf5b3"
+              }
+            },
+            "dmp:hasDataVolume": "19.6 kB"
+          },
+          "dmp:hasDataRepository": this.selectedRepo.rUrl,
+          "dmp:hasPreservation": "The JSON data source file and all files related to Docker should be preserved. The ability to recreate the two Docker images for mongoDB and Jupyter, as well as the availability of the data source file will allow the reproduction of the experiment.",
+          "dmp:hasDataSharing": "All files required to run the experiment are published on GitHub under the MIT license. A Digital Object Identifier (DOI) was created to unambiguously identify the data and make citation possible. The DOI was generated with Zenodo integrated with GitHub. The DOI always links to the latest release made on GitHub. Zenodo is an established, publicly searchable repository for science data, which supports the findability of our data. In order to enforce the reproducibility of our experiment we provide a Dockerfile along with the data. By following the instructions on GitHub it should be easy to run the experiment. Additionally a web page will be created to inform about the project and all aspects of the Data Management Plan.",
+          "dmp:hasEthicsAndPrivacy": "Ethical issues should not arise, since the data does not contain any sensible or inflicting data to individuals or groups. Our data does only contain aggregated numbers about divorces, without any detailled information. The input data which forms the basis for our experiment is also available on a publicly accessible open data platform.",
+          "dmp:hasDocumentation": "The data is documented in a self-contained way. The Jupyter notebook contains data, code, plots and documentation all in one. The experiment conducted in the Jupyter notebook is documented in a structured way describing each step of the experiment. Additionally a web page is created informing about the project and the details of the Data Management Plan. Documentation about the reproducibility of our experiment is available on the publicly accessible project repository on GitHub.",
+          "hasDocumentationLink": "https://github.com/oblassers/fair-data-science/blob/master/README.md",
+          "dmp:hasDataCollection": "The data will be used in the self-contained, interactive computing environment Jupyter. For this reason, all generated data, including plotting results, will only be transient in the memory. The notebook itself - stored in the .ipynb file format (internally it is JSON) - contains textual descriptions and python code, that transforms and visualizes the data set. The Jupyter notebook can be further transformed into various formats (.py, .html, .md, .rst, .tex, .pdf). The size can be considered as rather small - in the range of 20-500KB. To support the reproducibility of our experiment Dockerfiles are created in order to establish a working environment.",
+          "dmp:hasDataObject": [
+            {
+              "@type": "dmp:Container",
+              "github": "https://github.com/oblassers/fair-data-science/blob/master/Dockerfile",
+              "dc:title": "Dockerfile",
+              "dmp:hasIntelectualPropertyRights": {
+                "dcterms:license": "https://opensource.org/licenses/MIT"
+              },
+              "dmp:hasMetadata": {
+                "dcterms:description": "Dockerfile",
+                "premis:hasObjectCharacteristics": {
+                  "premis:fixity": {
+                    "premis:hasMessageDigestAlgorithm": "premis:Fixity:SHA-256",
+                    "premis:messageDigest": "a16c7c70cccd3b706d0e64038675a0b302c6250a159fd27b4f069565e1464797"
+                  }
+                },
+                "dmp:hasDataVolume": "103 bytes"
+              }
+            },
+            {
+              "@id": "https://www.salzburg.gv.at/ogd/7fa00c8b-6189-42b8-af93-cc1ebff0a818/divorce-szg-duration.json",
+              "@type": "dmp:File",
+              "dc:title": "JSON Data File",
+              "dmp:hasIntelectualPropertyRights": {
+                "dcterms:license": "https://creativecommons.org/licenses/by/3.0/"
+              },
+              "dmp:hasMetadata": {
+                "dcterms:description": "Time series dataset of divorced marriages in Salzburg Land from 1985 to 2014",
+                "premis:hasObjectCharacteristics": {
+                  "premis:hasFormat": "premis:Format:json",
+                  "premis:fixity": {
+                    "premis:hasMessageDigestAlgorithm": "premis:Fixity:SHA-256",
+                    "premis:messageDigest": "34c140deb5d56c02470741264cdd1e7326e19226cae9b8f050d1cdd95b8f83d9"
+                  }
+                },
+                "dmp:hasDataVolume": "49 kB"
+              }
+            },
+            {
+              "@type": "dmp:File",
+              "github": "https://github.com/oblassers/fair-data-science/blob/master/Task-3-Experiment.ipynb",
+              "dc:title": "Jupyter Notebook",
+              "dmp:hasMetadata": {
+                "dcterms:description": "Jupyter notebook containing the experiment",
+                "premis:hasObjectCharacteristics": {
+                  "premis:hasFormat": "premis:Format:ipynb",
+                  "premis:fixity": {
+                    "premis:hasMessageDigestAlgorithm": "premis:Fixity:SHA-256",
+                    "premis:messageDigest": "41739c49487f1dbaf4c4496b96a5b3c0c74d1a8849b3ef07778563cb2244bbb0"
+                  }
+                },
+                "dmp:hasDataVolume": "21 kB"
+              }
+            }
+          ]
+        }
+      ]
+    }, null, 2);
+  }
+
+  syntaxHighlight(json) {
+    if (typeof json != 'string') {
+      json = JSON.stringify(json, undefined, 2);
+    }
+    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+      var cls = 'number';
+      if (/^"/.test(match)) {
+        if (/:$/.test(match)) {
+          cls = 'key';
+        } else {
+          cls = 'string';
+        }
+      } else if (/true|false/.test(match)) {
+        cls = 'boolean';
+      } else if (/null/.test(match)) {
+        cls = 'null';
+      }
+      return '<span class="' + cls + '">' + match + '</span>';
+    });
   }
 
   fileChange(event) {

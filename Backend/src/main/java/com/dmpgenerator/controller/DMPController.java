@@ -18,12 +18,15 @@ import javax.xml.bind.JAXBException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathFactory;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -95,10 +98,15 @@ public class DMPController {
         JhoveBase je = new JhoveBase();
         je.setLogLevel("ERROR");
 
-        String configFile = JhoveBase.getConfigFileFromProperties();
+
         String saxClass = JhoveBase.getSaxClassFromProperties();
 
-        je.init(configFile, saxClass);
+        // Get config file from resources and decode path so that spaces are represented correctly (not with %20 instead of spaces)
+        ClassLoader classLoader = getClass().getClassLoader();
+        String xslFile = classLoader.getResource("jhove.conf").getPath();
+        xslFile= URLDecoder.decode(xslFile, "UTF-8");
+
+        je.init(xslFile, saxClass);
 
         File outputFile = File.createTempFile(inputFile.getName(), ".tmp");
 

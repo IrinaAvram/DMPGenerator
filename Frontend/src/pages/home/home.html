@@ -211,8 +211,40 @@
               <p><b>Project</b> {{generatedDmp.project}}</p>
             </ion-row>
             <ion-row *ngIf="dmpWasGenerated">
-
               <p><b>Author:</b> {{generatedDmp.author.person.precedingTitles}} {{generatedDmp.author.person.firstname}} {{generatedDmp.author.person.lastname}} {{generatedDmp.author.person.postpositionedTitles}} </p>
+            </ion-row>
+            <ion-row *ngIf="dmpWasGenerated">
+              <p ><b>Contact Information:</b> </p>
+            </ion-row>
+            <ion-row *ngIf="dmpWasGenerated">
+              <p style="text-indent: 2%"><b>Email:</b> {{generatedDmp.author.person.mainEmail}}  </p>
+            </ion-row>
+            <ion-row *ngIf="dmpWasGenerated">
+              <p style="text-indent: 2%"><b>Institute:</b> {{generatedDmp.author.person.employee.employment[0].organisationalUnit.value}}  </p>
+            </ion-row>
+            <ion-row *ngIf="dmpWasGenerated">
+              <p style="text-indent: 2%"><b>Room:</b> {{generatedDmp.author.person.employee.employment[0].room.roomCode}}  </p>
+            </ion-row>
+            <ion-row *ngIf="dmpWasGenerated">
+              <p style="text-indent: 2%"><b>Website:</b> {{generatedDmp.author.person.employee.employment[0].websites.website[0].url}}  </p>
+            </ion-row>
+            <ion-row *ngIf="dmpWasGenerated">
+              <p ><b>Files:</b> </p>
+            </ion-row>
+            <ion-row>
+              <li *ngFor="let file of generatedDmp.files">
+                <p><b>Name:</b> {{file.name}} <br><b style="text-indent: 2%">Type:</b> {{file.type}}  <br>
+                  <b>Mime-Type:</b> {{file.mimeType}}<br>
+                  <b>Size:</b> {{file.size}}<br>
+                  <b>Number of similar files:</b> {{file.number}}<br>
+                </p>
+              </li>
+            </ion-row>
+            <ion-row *ngIf="dmpWasGenerated">
+              <p ><b>License: </b>{{generatedDmp.license.name}} <br>{{generatedDmp.license.url}} </p>
+            </ion-row>
+            <ion-row *ngIf="dmpWasGenerated">
+              <p ><b>Repository: </b>{{generatedDmp.repository.name}} <br>{{generatedDmp.repository.rUrl}}  </p>
             </ion-row>
             <ion-row *ngIf="dmpWasGenerated">
               <p><b>Generated JSON</b> </p><pre>{{generatedDmp | json}}</pre>

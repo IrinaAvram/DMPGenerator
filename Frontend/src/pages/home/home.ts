@@ -148,9 +148,40 @@ export class HomePage {
     return true
   }
 
+  sanitizeGeneratedDMP(){
+    delete this.pcreator.person.gender;
+    delete this.pcreator.person.pictureUri ;
+    delete this.pcreator.person.mainPhoneNumber;
+    delete this.pcreator.person.mainAddresses;
+    delete this.pcreator.person.consultationHours;
+    delete this.pcreator.person.consultationHourInfo;
+    delete this.pcreator.person.additionalInfos;
+    delete this.pcreator.person.student;
+
+    delete this.pcreator.person.employee.employment[0].organisationalUnit.tissId;
+    delete this.pcreator.person.employee.employment[0].organisationalUnit.oid;
+    delete this.pcreator.person.employee.employment[0].organisationalUnit.code;
+    delete this.pcreator.person.employee.employment[0].organisationalUnit.number;
+
+    delete this.pcreator.person.employee.employment[0].function;
+    delete this.pcreator.person.employee.employment[0].functionCategory;
+    delete this.pcreator.person.employee.employment[0].room.address;
+    delete this.pcreator.person.employee.employment[0].addresses;
+    delete this.pcreator.person.employee.employment[0].phoneNumbers;
+    delete this.pcreator.person.employee.employment[0].faxNumbers;
+    delete this.pcreator.person.employee.employment[0].emails;
+    delete this.pcreator.person.employee.employment[0].websites.website[0].value;
+    delete this.pcreator.person.employee.employment[0].additionalInfo;
+    delete this.pcreator.person.tissId;
+    delete this.pcreator.person.oid;
+    delete this.pcreator.version;
+  }
+
   createDMP() {
     // TODO
     this.dmpWasGenerated=true;
+    delete this.pcreator.person.gender;
+    this.sanitizeGeneratedDMP();
     this.generatedDmp = {project:this.projectName, author: this.pcreator, repository:this.selectedRepo, license: this.selectedLicense, files: this.files};
     /*this.gDmp = this.syntaxHighlight(this.generatedDmp);JSON.stringify({
       "@context": {

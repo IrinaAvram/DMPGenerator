@@ -232,11 +232,11 @@
             <p ><b>Sample Files:</b> </p>
           </ion-row>
           <ion-row>
-            <li *ngFor="let file of generatedDmp.files">
-              <p><b>Name:</b> {{file.name}} <br><b style="text-indent: 2%">Type:</b> {{file.type}}  <br>
-                <b>Mime-Type:</b> {{file.mimeType}}<br>
+            <li *ngFor="let file of generatedDmp.files" style="padding-right: 20px">
+              <b>Name:</b> {{file.name}} <br><p><b style="text-indent: 2%">Type:</b> {{file.type}}
+              <b>Mime-Type:</b> {{file.mimeType}}<br>
                 <b>Size:</b> {{file.size}}<br>
-                <b>Number of similar files:</b> {{file.number}}<br>
+                <b>Number of similar files:</b> {{file.number}}<br><br>
               </p>
             </li>
           </ion-row>

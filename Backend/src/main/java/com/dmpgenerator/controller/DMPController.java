@@ -1,6 +1,7 @@
 package com.dmpgenerator.controller;
 
 import com.dmpgenerator.dto.AnalysisResultDto;
+import com.dmpgenerator.dto.LicenseSelectionStatus;
 import com.dmpgenerator.dto.PersonSearchResultsDTO;
 import com.dmpgenerator.dto.RepositoryDto;
 import com.dmpgenerator.dto.generated.https.tiss_tuwien_ac_at.api.schemas.person.v21.TuviennaType;
@@ -39,6 +40,7 @@ public class DMPController {
 
     private final com.dmpgenerator.service.DMPService DMPService;
     private String license = "";
+    private boolean licenseIsSelected = false;
 
     @Autowired
     public DMPController(DMPService DMPService) {
@@ -55,9 +57,6 @@ public class DMPController {
         String type = "";
         if(types.isPresent()) {
             type = types.get();
-            System.out.println("FOUND TYPE " + type);
-        } else {
-            System.out.println("nothin....");
         }
         return DMPService.getRepoList(country, type);
     }
@@ -70,16 +69,26 @@ public class DMPController {
     @RequestMapping(value="sendLicense", method = RequestMethod.POST)
     public void sendLicense(@RequestBody String license) throws Exception {
         this.license = license;
-        System.out.println(license);
+        this.licenseIsSelected = true;
     }
+
     @RequestMapping(value="getLicense", method = RequestMethod.GET)
     public String getLicense() throws Exception {
         return license;
     }
 
+    @RequestMapping(value="invalidateLicenseStatus", method = RequestMethod.GET)
+    public void invalidateLicenseStatus() throws Exception {
+        this.licenseIsSelected = false;
+    }
+
+    @RequestMapping(value="getLicenseStatus", method = RequestMethod.GET)
+    public LicenseSelectionStatus getLicenseStatus() throws Exception {
+        return new LicenseSelectionStatus(licenseIsSelected);
+    }
+
     @RequestMapping(value="analizeData", method = RequestMethod.POST, consumes = {"multipart/form-data"})
     public AnalysisResultDto importQuestion(@RequestPart("uploadedFile") MultipartFile multipart) throws Exception {
-        System.out.println("Post method of uploaded Questions ");
         System.out.println("Uploaded file Name : " + multipart.getOriginalFilename());
         int[] date = new int[3];
         String[] path = new String[1];

@@ -26,7 +26,7 @@
         <!-- part of the form regarding personal information -->
         <ion-list *ngSwitchCase="'basicInfo'">
           <button ion-button style="margin-top: 5%; left: 93%" (click)="goToLicense()" >Select License</button>
-          <form [formGroup]="basicInfoForm">
+          <form [formGroup]="basicInfoForm" *ngIf="selectedLicense">
             <ion-grid>
               <ion-row>
                 <ion-col col-2 *ngIf="!foundOnTiss">

@@ -86,6 +86,20 @@ export class RestProvider {
 
     });
   }
+  callVoidGet(address) {
+    return new Promise(resolve => {
+      this.authHttp.get(`${this.env.apiEndpoint}/${address}`)
+        .subscribe(
+          (data) => {
+            resolve(data)
+          },
+          (err) => {
+            console.log("error during GET", err)
+          }
+        );
+
+    });
+  }
 
   callPost(address, body) {
     return new Promise((resolve, reject) => {

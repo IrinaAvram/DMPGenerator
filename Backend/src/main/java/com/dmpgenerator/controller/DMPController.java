@@ -113,6 +113,7 @@ public class DMPController {
         // Get config file from resources and decode path so that spaces are represented correctly (not with %20 instead of spaces)
         ClassLoader classLoader = getClass().getClassLoader();
         String xslFile = classLoader.getResource("jhove.conf").getPath();
+        xslFile="/app/src/main/resources/jhove.conf";
         xslFile= URLDecoder.decode(xslFile, "UTF-8");
 
         je.init(xslFile, saxClass);

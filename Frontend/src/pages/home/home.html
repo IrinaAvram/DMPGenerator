@@ -3,7 +3,7 @@
 <ion-content padding>
 
     <!-- Segment in a form -->
-    <ion-segment color="primary" [(ngModel)]="dmpCreationStep" name = "dmpCreationStep" style="width: 60%; margin: auto;" padding>
+    <ion-segment color="primary" [(ngModel)]="dmpCreationStep" name = "dmpCreationStep" style="width: 60%; margin: auto;" padding  *ngIf="!dmpWasGenerated">
 
       <ion-segment-button value="basicInfo" #personalInfo>
         <ion-icon name="card"></ion-icon>
@@ -107,7 +107,7 @@
             <ion-input type="file" name ="uploadedFile" (change)="fileChange($event)" placeholder="Upload file" multiple></ion-input><!--accept=".pdf,.doc,.docx"-->
           </ion-item>
           <ion-grid>
-            <ion-row *ngIf="files.length > 0" style="background-color: #007aff; color: white; border-bottom: solid; border-color: #dbdbdb">
+            <ion-row *ngIf="files.length > 0" style="background-color: #488aff; color: white; border-bottom: solid; border-color: #dbdbdb">
               <ion-col col-2 padding-top="2px">
                 Name
               </ion-col>
@@ -149,7 +149,7 @@
                 </button>
               </ion-col>
             </ion-row>
-            <ion-row *ngIf="finishedSpaceComputation" class="userList" style="background-color: #007aff; color: white; border-bottom: solid; border-color: #dbdbdb">
+            <ion-row *ngIf="finishedSpaceComputation" class="userList" style="background-color: #488aff; color: white; border-bottom: solid; border-color: #dbdbdb">
               <ion-grid>
                 <ion-row>
                   <h3>Required Storage space</h3>
@@ -174,7 +174,7 @@
 
         <!-- part of the form regarding account information -->
         <ion-list *ngSwitchCase="'repoAndLicense'">
-          <ion-grid>
+          <ion-grid *ngIf="!dmpWasGenerated">
             <ion-row>
               <h3>Repositories</h3>
             </ion-row>
@@ -203,56 +203,52 @@
             <ion-row *ngIf="licenseWasChosen">
               <p><b>Description:</b> {{selectedLicense.description}}</p>
             </ion-row>
-
-            <ion-row *ngIf="dmpWasGenerated">
-              <h3>Generated DMP:</h3>
-            </ion-row>
-            <ion-row *ngIf="dmpWasGenerated">
-              <p><b>Project</b> {{generatedDmp.project}}</p>
-            </ion-row>
-            <ion-row *ngIf="dmpWasGenerated">
-              <p><b>Author:</b> {{generatedDmp.author.person.precedingTitles}} {{generatedDmp.author.person.firstname}} {{generatedDmp.author.person.lastname}} {{generatedDmp.author.person.postpositionedTitles}} </p>
-            </ion-row>
-            <ion-row *ngIf="dmpWasGenerated">
-              <p ><b>Contact Information:</b> </p>
-            </ion-row>
-            <ion-row *ngIf="dmpWasGenerated">
-              <p style="text-indent: 2%"><b>Email:</b> {{generatedDmp.author.person.mainEmail}}  </p>
-            </ion-row>
-            <ion-row *ngIf="dmpWasGenerated">
-              <p style="text-indent: 2%"><b>Institute:</b> {{generatedDmp.author.person.employee.employment[0].organisationalUnit.value}}  </p>
-            </ion-row>
-            <ion-row *ngIf="dmpWasGenerated">
-              <p style="text-indent: 2%"><b>Room:</b> {{generatedDmp.author.person.employee.employment[0].room.roomCode}}  </p>
-            </ion-row>
-            <ion-row *ngIf="dmpWasGenerated">
-              <p style="text-indent: 2%"><b>Website:</b> {{generatedDmp.author.person.employee.employment[0].websites.website[0].url}}  </p>
-            </ion-row>
-            <ion-row *ngIf="dmpWasGenerated">
-              <p ><b>Files:</b> </p>
-            </ion-row>
-            <ion-row>
-              <li *ngFor="let file of generatedDmp.files">
-                <p><b>Name:</b> {{file.name}} <br><b style="text-indent: 2%">Type:</b> {{file.type}}  <br>
-                  <b>Mime-Type:</b> {{file.mimeType}}<br>
-                  <b>Size:</b> {{file.size}}<br>
-                  <b>Number of similar files:</b> {{file.number}}<br>
-                </p>
-              </li>
-            </ion-row>
-            <ion-row *ngIf="dmpWasGenerated">
-              <p ><b>License: </b>{{generatedDmp.license.name}} <br>{{generatedDmp.license.url}} </p>
-            </ion-row>
-            <ion-row *ngIf="dmpWasGenerated">
-              <p ><b>Repository: </b>{{generatedDmp.repository.name}} <br>{{generatedDmp.repository.rUrl}}  </p>
-            </ion-row>
-            <ion-row *ngIf="dmpWasGenerated">
-              <p><b>Generated JSON</b> </p><pre>{{generatedDmp | json}}</pre>
-            </ion-row>
           </ion-grid>
-
-
-          <button ion-button style="margin-top: 5%; left: 93%" (click)="createDMP()" [disabled]="!repoWasChosen">Create DMP</button>
+          <button ion-button style="margin-top: 5%; left: 93%" (click)="createDMP()" [disabled]="!repoWasChosen"  *ngIf="!dmpWasGenerated">Create DMP</button>
         </ion-list>
+        <ion-grid *ngIf="dmpWasGenerated">
+          <ion-row >
+            <h2>Data management plan for project  <span style="color:#488aff"> {{generatedDmp.project}}</span></h2>
+          </ion-row>
+          <ion-row style="padding-top: 10px">
+            <h4><b>Author: </b> {{generatedDmp.author.person.precedingTitles}} <span style="color:#488aff">{{generatedDmp.author.person.firstname}} {{generatedDmp.author.person.lastname}}</span> {{generatedDmp.author.person.postpositionedTitles}} </h4>
+          </ion-row>
+          <ion-row>
+            <p ><b>Contact Information:</b> </p>
+          </ion-row>
+          <ion-row>
+            <p style="text-indent: 2%"><b>Email:</b> {{generatedDmp.author.person.mainEmail}}  </p>
+          </ion-row>
+          <ion-row>
+            <p style="text-indent: 2%"><b>Institute:</b> {{generatedDmp.author.person.employee.employment[0].organisationalUnit.value}}  </p>
+          </ion-row>
+          <ion-row>
+            <p style="text-indent: 4%"><b>Room:</b> {{generatedDmp.author.person.employee.employment[0].room.roomCode}}  </p>
+          </ion-row>
+          <ion-row>
+            <p style="text-indent: 2%"><b>Website:</b> {{generatedDmp.author.person.employee.employment[0].websites.website[0].url}}  </p>
+          </ion-row>
+          <ion-row *ngIf="generatedDmp.files.length > 0">
+            <p ><b>Sample Files:</b> </p>
+          </ion-row>
+          <ion-row>
+            <li *ngFor="let file of generatedDmp.files" style="padding-right: 20px">
+              <b>Name:</b> {{file.name}} <br><p><b style="text-indent: 2%">Type:</b> {{file.type}}
+              <b>Mime-Type:</b> {{file.mimeType}}<br>
+                <b>Size:</b> {{file.size}}<br>
+                <b>Number of similar files:</b> {{file.number}}<br><br>
+              </p>
+            </li>
+          </ion-row>
+          <ion-row>
+            <p ><b>License: </b>{{generatedDmp.license.name}} <br>{{generatedDmp.license.url}} </p>
+          </ion-row>
+          <ion-row>
+            <p ><b>Repository: </b>{{generatedDmp.repository.name}} <br>{{generatedDmp.repository.rUrl}}  </p>
+          </ion-row>
+          <ion-row style="padding-top: 10px">
+            <h4>Machine-actionable DMP</h4><pre style="background-color: #dbdbdb">{{generatedDmp | json}}</pre>
+          </ion-row>
+        </ion-grid>
       </div>
 </ion-content>

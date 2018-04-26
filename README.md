@@ -6,7 +6,7 @@ Website allowing an automatized Creation of Data Management Plans
 Execute the following commands while in the "DMPGenerator" folder to build the containers.
 ```bash
 docker build -f docker/frontend.Dockerfile -t frontend .
-docker build -f docker/frontend.Dockerfile -t backend .
+docker build -f docker/backend.Dockerfile -t backend .
 ```
 *Docker files have been provided in the "docker" folder*.
 

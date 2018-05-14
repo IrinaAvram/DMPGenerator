@@ -18,5 +18,6 @@ docker run -p 8100:8100 frontend
 ```
 To use the tool open your favorite webbrowser and navigate to:
 
-
-
+```bash
+localhost:8100
+```
